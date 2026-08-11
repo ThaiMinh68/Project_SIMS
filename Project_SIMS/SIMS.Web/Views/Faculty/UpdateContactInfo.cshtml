@@ -1,0 +1,67 @@
+@{
+	ViewData["Title"] = "Update Contact Information";
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-primary"><i class="bi bi-telephone"></i> @ViewData["Title"]</h1>
+		<a href="@Url.Action("Profile", "Faculty")" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back to Profile
+		</a>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6 offset-lg-3">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-white pt-4 pb-0">
+					<h5 class="mb-0">Update Contact Details</h5>
+				</div>
+				<div class="card-body">
+					@if (ViewData.ModelState.Values.Any(v => v.Errors.Any()))
+					{
+						<div class="alert alert-danger" role="alert">
+							<h6 class="alert-heading">Error!</h6>
+							<ul class="mb-0">
+								@foreach (var modelState in ViewData.ModelState.Values)
+								{
+									@foreach (var error in modelState.Errors)
+									{
+										<li>@error.ErrorMessage</li>
+									}
+								}
+							</ul>
+						</div>
+					}
+
+					<form method="post">
+						<div class="mb-3">
+							<label for="phoneNumber" class="form-label">Phone Number</label>
+							<input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" 
+								   placeholder="+84 123 456 789">
+						</div>
+
+						<div class="mb-3">
+							<label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+							<input type="email" class="form-control" id="email" name="email" required
+								   placeholder="your.email@example.com">
+						</div>
+
+						<div class="alert alert-info" role="alert">
+							<i class="bi bi-info-circle"></i>
+							<strong>Note:</strong> Your email is used for login. Changing it will update your username.
+						</div>
+
+						<div class="d-flex gap-2 pt-3">
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-check-circle"></i> Update
+							</button>
+							<a href="@Url.Action("Profile", "Faculty")" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

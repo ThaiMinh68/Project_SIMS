@@ -1,0 +1,107 @@
+@{
+	ViewData["Title"] = "Edit Faculty";
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-success"><i class="bi bi-pencil-square"></i> @ViewData["Title"]</h1>
+		<a asp-action="FacultyIndex" asp-controller="Admin" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back to List
+		</a>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-white pt-4 pb-0">
+					<h5 class="mb-0">Faculty Information</h5>
+				</div>
+				<div class="card-body">
+					<form asp-action="FacultyEdit" asp-controller="Admin" method="post">
+						<input type="hidden" name="id" value="@Model.Id">
+
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<label for="firstName" class="form-label">First Name</label>
+								<input type="text" class="form-control" 
+									   id="firstName" name="firstName" value="@Model.FirstName" required>
+							</div>
+							<div class="col-md-6">
+								<label for="lastName" class="form-label">Last Name</label>
+								<input type="text" class="form-control" 
+									   id="lastName" name="lastName" value="@Model.LastName" required>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<label for="facultyId" class="form-label">Faculty ID</label>
+								<input type="text" class="form-control" id="facultyId" value="@Model.FacultyId" disabled>
+								<small class="text-muted">Faculty ID cannot be changed</small>
+							</div>
+							<div class="col-md-6">
+								<label for="title" class="form-label">Title</label>
+								<select class="form-select" id="title" name="title" required>
+									<option value="">Select Title</option>
+									@{
+										var titles = new[] { "Prof", "Dr", "Assoc. Prof", "Asst. Prof", "Lecturer", "Instructor" };
+									}
+									@foreach (var titleOption in titles)
+									{
+										if (Model.Title == titleOption)
+										{
+											<option value="@titleOption" selected>@titleOption</option>
+										}
+										else
+										{
+											<option value="@titleOption">@titleOption</option>
+										}
+									}
+								</select>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<label for="hireDate" class="form-label">Hire Date</label>
+								<input type="date" class="form-control" 
+									   id="hireDate" name="hireDate" value="@Model.HireDate.ToString("yyyy-MM-dd")" required>
+							</div>
+							<div class="col-md-6">
+								<label for="departmentId" class="form-label">Department</label>
+								<select class="form-select" id="departmentId" name="departmentId" required asp-items="ViewBag.Departments">
+									<option value="">Select Department</option>
+								</select>
+							</div>
+						</div>
+
+						@if (!ViewData.ModelState.IsValid)
+						{
+							<div class="alert alert-danger" role="alert">
+								<h6 class="alert-heading">Please correct the following errors:</h6>
+								<ul class="mb-0">
+									@foreach (var modelState in ViewData.ModelState.Values)
+									{
+										@foreach (var error in modelState.Errors)
+										{
+											<li>@error.ErrorMessage</li>
+										}
+									}
+								</ul>
+							</div>
+						}
+
+						<div class="d-flex gap-2 pt-3">
+							<button type="submit" class="btn btn-success">
+								<i class="bi bi-check-circle"></i> Update Faculty
+							</button>
+							<a asp-action="FacultyIndex" asp-controller="Admin" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

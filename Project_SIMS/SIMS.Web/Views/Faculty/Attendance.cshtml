@@ -1,0 +1,73 @@
+@model IEnumerable<dynamic>
+
+@{
+	ViewData["Title"] = "Attendance History - " + ViewBag.CourseName;
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-info"><i class="bi bi-calendar-check"></i> @ViewData["Title"]</h1>
+		<a href="@Url.Action("TakeAttendance", new { courseId = ViewBag.CourseId, date = DateTime.Today.ToString("yyyy-MM-dd") })" class="btn btn-success">
+			<i class="bi bi-plus-lg"></i> Take Attendance Today
+		</a>
+	</div>
+
+	<div class="card shadow-sm border-0">
+		<div class="card-header bg-white pt-4 pb-0">
+			<h5 class="mb-0">Attendance Records</h5>
+		</div>
+		<div class="card-body">
+			@if (Model != null && Model.Any())
+			{
+				<div class="table-responsive">
+					<table class="table table-hover align-middle">
+						<thead class="table-light">
+							<tr>
+								<th>Date</th>
+								<th>Student</th>
+								<th>Status</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var record in Model)
+							{
+								<tr>
+									<td>@record.Date.ToString("dd/MM/yyyy")</td>
+									<td>
+										<strong>@record.StudentName</strong><br>
+										<small class="text-muted">@record.StudentCode</small>
+									</td>
+									<td>
+									@switch (record.Status)
+									{
+										case "Present":
+											<span class="badge bg-success">Có mặt</span>
+											break;
+										case "Absent":
+											<span class="badge bg-danger">Vắng</span>
+											break;
+										case "Late":
+											<span class="badge bg-warning">Muộn</span>
+											break;
+										default:
+											<span class="badge bg-secondary">@record.Status</span>
+											break;
+									}
+									</td>
+									<td>@record.Notes</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+			else
+			{
+				<div class="alert alert-info" role="alert">
+					<i class="bi bi-info-circle"></i> No attendance records yet.
+				</div>
+			}
+		</div>
+	</div>
+</div>

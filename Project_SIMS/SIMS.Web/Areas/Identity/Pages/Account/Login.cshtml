@@ -1,0 +1,301 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="login-wrapper d-flex align-items-center justify-content-center min-vh-100 position-relative overflow-hidden">
+    <!-- Background abstract ambient lights -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
+    <div class="container position-relative z-1" style="max-width: 460px;">
+        <div class="card glass-card border-0 shadow-lg p-4 p-md-5">
+            <!-- Brand / Logo Header -->
+            <div class="text-center mb-4">
+                <div class="brand-logo-container d-inline-flex align-items-center justify-content-center mb-3">
+                    <i class="fas fa-layer-group fs-2"></i>
+                </div>
+                <h3 class="fw-bold mb-1 tracking-tight">Welcome Back</h3>
+                <p class="text-muted small">Student Information Management System</p>
+            </div>
+
+            <!-- Validation Errors -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger-custom d-flex align-items-start gap-2 mb-4" role="alert">
+                    <i class="fas fa-exclamation-circle mt-1"></i>
+                    <div>
+                        <div asp-validation-summary="All" class="text-danger small fw-semibold list-unstyled"></div>
+                    </div>
+                </div>
+            }
+
+            <!-- Form -->
+            <form id="account" method="post">
+                <div class="form-floating mb-3 position-relative">
+                    <input asp-for="Input.Email" class="form-control px-4" id="floatingInput" placeholder="name@example.com" autocomplete="username" required aria-required="true" />
+                    <label asp-for="Input.Email" class="ps-4">Email Address</label>
+                    <span asp-validation-for="Input.Email" class="text-danger small mt-1 d-block"></span>
+                </div>
+
+                <div class="form-floating mb-3 position-relative">
+                    <input asp-for="Input.Password" type="password" class="form-control px-4" id="floatingPassword" placeholder="Password" autocomplete="current-password" required aria-required="true" />
+                    <label asp-for="Input.Password" class="ps-4">Password</label>
+                    <button type="button" class="btn-toggle-password" id="togglePasswordBtn" tabindex="-1">
+                        <i class="far fa-eye" id="togglePasswordIcon"></i>
+                    </button>
+                    <span asp-validation-for="Input.Password" class="text-danger small mt-1 d-block"></span>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="Input.RememberMe" id="rememberMeCheck" />
+                        <label class="form-check-label text-muted small" asp-for="Input.RememberMe" for="rememberMeCheck">
+                            Remember this device
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button id="login-submit" type="submit" class="btn btn-primary w-100 py-3 mb-4 d-flex align-items-center justify-content-center gap-2">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right fs-6"></i>
+                </button>
+            </form>
+
+            <!-- Quick Demo Credentials Helper -->
+            <div class="border-top pt-4">
+                <p class="text-center text-muted small fw-semibold mb-3">Quick Login (Demo Accounts)</p>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-demo d-flex align-items-center justify-content-between px-3 py-2" onclick="fillAndSubmit('admin@sims.com', 'Admin@123')">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-role bg-admin"><i class="fas fa-user-shield me-1"></i> Admin</span>
+                            <span class="small text-muted d-none d-sm-inline">admin@sims.com</span>
+                        </div>
+                        <i class="fas fa-bolt text-warning small"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-demo d-flex align-items-center justify-content-between px-3 py-2" onclick="fillAndSubmit('faculty@sims.com', 'Faculty@123')">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-role bg-faculty"><i class="fas fa-chalkboard-teacher me-1"></i> Faculty</span>
+                            <span class="small text-muted d-none d-sm-inline">faculty@sims.com</span>
+                        </div>
+                        <i class="fas fa-bolt text-warning small"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-demo d-flex align-items-center justify-content-between px-3 py-2" onclick="fillAndSubmit('student@sims.com', 'Student@123')">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-role bg-student"><i class="fas fa-user-graduate me-1"></i> Student</span>
+                            <span class="small text-muted d-none d-sm-inline">student@sims.com</span>
+                        </div>
+                        <i class="fas fa-bolt text-warning small"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Full Page Setup */
+    .login-wrapper {
+        min-height: 100vh;
+        width: 100%;
+        background: radial-gradient(circle at 0% 0%, hsla(270, 95%, 93%, 0.6) 0%, var(--bg-app) 100%);
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* Ambient Orbs */
+    .ambient-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.45;
+        z-index: 0;
+        pointer-events: none;
+        animation: floatOrb 12s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+        width: 350px;
+        height: 350px;
+        background: var(--primary);
+        top: -10%;
+        left: -10%;
+        animation-delay: 0s;
+    }
+    .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: var(--accent);
+        bottom: -15%;
+        right: -10%;
+        animation-delay: 2s;
+    }
+    .orb-3 {
+        width: 250px;
+        height: 250px;
+        background: hsl(200, 80%, 65%);
+        top: 40%;
+        left: 80%;
+        animation-delay: 4s;
+    }
+
+    @@keyframes floatOrb {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    /* Glass Card customization */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.72) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 30px 60px -15px rgba(110, 40, 200, 0.12), 
+                    0 15px 30px -10px rgba(0, 0, 0, 0.04) !important;
+        border-radius: var(--radius-xl) !important;
+        animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @@keyframes cardEntrance {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Brand Logo */
+    .brand-logo-container {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        box-shadow: var(--shadow-primary);
+        margin-bottom: 1rem;
+    }
+
+    /* Custom Floating Inputs */
+    .form-control {
+        border: 1px solid rgba(160, 32, 240, 0.15) !important;
+        background-color: rgba(255, 255, 255, 0.6) !important;
+        border-radius: var(--radius-md) !important;
+        height: calc(3.5rem + 2px) !important;
+        line-height: 1.25 !important;
+        transition: all 0.25s ease !important;
+    }
+    .form-control:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 4px rgba(160, 32, 240, 0.12) !important;
+        background-color: #fff !important;
+    }
+
+    /* Password Eye Button */
+    .btn-toggle-password {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 4px;
+        font-size: 1.1rem;
+        transition: color 0.2s ease;
+        z-index: 10;
+    }
+    .btn-toggle-password:hover {
+        color: var(--primary);
+    }
+
+    /* Custom alerts */
+    .alert-danger-custom {
+        background-color: hsla(355, 85%, 50%, 0.08);
+        border: 1px solid hsla(355, 85%, 50%, 0.15);
+        color: var(--danger);
+        border-radius: var(--radius-md);
+        padding: 0.85rem 1rem;
+    }
+    .alert-danger-custom .list-unstyled ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* Demo Account Buttons */
+    .btn-outline-demo {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(160, 32, 240, 0.08);
+        border-radius: var(--radius-md);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        color: var(--text-main);
+        font-weight: 500;
+        box-shadow: none;
+    }
+    .btn-outline-demo:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Badges in helper */
+    .badge-role {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.78rem;
+        color: white;
+    }
+    .bg-admin {
+        background: linear-gradient(135deg, hsl(270, 85%, 50%), hsl(300, 80%, 45%));
+    }
+    .bg-faculty {
+        background: linear-gradient(135deg, hsl(200, 85%, 45%), hsl(220, 80%, 45%));
+    }
+    .bg-student {
+        background: linear-gradient(135deg, hsl(150, 80%, 38%), hsl(170, 75%, 35%));
+    }
+</style>
+
+<script>
+    // Toggle Password Visibility
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.getElementById("togglePasswordBtn");
+        const passwordInput = document.getElementById("floatingPassword");
+        const eyeIcon = document.getElementById("togglePasswordIcon");
+
+        if (toggleBtn && passwordInput && eyeIcon) {
+            toggleBtn.addEventListener("click", function() {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+                
+                if (type === "text") {
+                    eyeIcon.className = "far fa-eye-slash";
+                } else {
+                    eyeIcon.className = "far fa-eye";
+                }
+            });
+        }
+    });
+
+    // Preset Credentials Injector & Auto-Submitter
+    function fillAndSubmit(email, password) {
+        const emailInput = document.getElementById("floatingInput");
+        const passwordInput = document.getElementById("floatingPassword");
+        const form = document.getElementById("account");
+        
+        if (emailInput && passwordInput && form) {
+            emailInput.value = email;
+            passwordInput.value = password;
+            
+            // Highlight fields for a brief moment before submitting
+            emailInput.style.borderColor = "var(--primary)";
+            passwordInput.style.borderColor = "var(--primary)";
+            
+            setTimeout(() => {
+                form.submit();
+            }, 300);
+        }
+    }
+</script>

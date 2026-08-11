@@ -1,0 +1,53 @@
+@model IEnumerable<SIMS.Application.DTOs.AvailableCourseDto>
+
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-primary"><i class="bi bi-calendar-event"></i> My Schedule</h1>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-white pt-4 pb-0">
+            <h5 class="mb-0">My Courses</h5>
+        </div>
+        <div class="card-body">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">Bạn chưa đăng ký môn học nào.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                                <th>Course Code</th>
+                                <th>Title</th>
+                                <th>Credits</th>
+                                <th>Department</th>
+                                <th>Faculty</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-secondary">@c.Code</span></td>
+                                    <td class="fw-bold">@c.Title</td>
+                                    <td>@c.Credits</td>
+                                    <td>@c.DepartmentName</td>
+                                    <td>@c.AssignedFacultyName</td>
+                                    <td>@c.MeetingDay</td>
+                                    <td>@(c.StartTime.HasValue && c.EndTime.HasValue ? (c.StartTime.Value.ToString("hh\\:mm") + " - " + c.EndTime.Value.ToString("hh\\:mm")) : "TBD")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+@model CreateAssignmentDto
+
+@{
+	ViewData["Title"] = "Create Assignment";
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-warning"><i class="bi bi-plus-circle"></i> @ViewData["Title"]</h1>
+		<a href="@Url.Action("Assignments", new { courseId = ViewBag.CourseId })" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back
+		</a>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-white pt-4 pb-0">
+					<h5 class="mb-0">Assignment Details</h5>
+				</div>
+				<div class="card-body">
+					<form asp-action="CreateAssignment" method="post">
+						<input type="hidden" name="courseId" value="@ViewBag.CourseId">
+
+						<div class="mb-3">
+							<label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+							<input type="text" class="form-control" id="title" name="title" 
+								   placeholder="Assignment title" required asp-for="Title">
+						</div>
+
+						<div class="mb-3">
+							<label for="description" class="form-label">Description</label>
+							<textarea class="form-control" id="description" name="description" rows="4" 
+									  placeholder="Assignment description" asp-for="Description"></textarea>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="dueDate" class="form-label">Due Date <span class="text-danger">*</span></label>
+								<input type="datetime-local" class="form-control" id="dueDate" name="dueDate" 
+									   required asp-for="DueDate">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="attachmentUrl" class="form-label">Attachment URL</label>
+								<input type="url" class="form-control" id="attachmentUrl" name="attachmentUrl" 
+									   placeholder="https://example.com/file" asp-for="AttachmentUrl">
+							</div>
+						</div>
+
+						<div class="d-flex gap-2 pt-3">
+							<button type="submit" class="btn btn-warning">
+								<i class="bi bi-check-circle"></i> Create Assignment
+							</button>
+							<a href="@Url.Action("Assignments", new { courseId = ViewBag.CourseId })" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

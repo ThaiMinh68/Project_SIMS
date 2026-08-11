@@ -1,0 +1,46 @@
+@model IEnumerable<SIMS.Application.DTOs.CourseEnrollmentDto>
+@{
+    var course = ViewBag.Course as SIMS.Domain.Entities.Course;
+    ViewData["Title"] = "Enrollments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <h1 class="text-primary">Enrollments for: @course?.Title</h1>
+        <div>
+            <a asp-action="EnrollStudents" asp-route-id="@course?.Id" class="btn btn-primary me-2">Add Students</a>
+            <a asp-action="Edit" asp-route-id="@course?.Id" class="btn btn-secondary">Back to Course</a>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Student Code</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Semester</th>
+                            <th>Enrolled On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model)
+                        {
+                            <tr>
+                                <td>@e.StudentCode</td>
+                                <td>@e.StudentName</td>
+                                <td>@e.Email</td>
+                                <td>@e.SemesterName</td>
+                                <td>@e.EnrollmentDate.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

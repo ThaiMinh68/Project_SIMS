@@ -1,0 +1,78 @@
+@model IEnumerable<SIMS.Application.DTOs.CourseDto>
+
+@{
+    ViewData["Title"] = "Course Management";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <h1 class="text-primary"><i class="bi bi-book-fill"></i> @ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Add New Course
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-white pt-4 pb-0">
+            <h5 class="mb-0">Course List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Credits</th>
+                            <th>Department</th>
+                            <th>Assigned Faculty</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><span class="badge bg-secondary">@item.Code</span></td>
+                                <td class="fw-bold">@item.Title</td>
+                                <td>@item.Credits</td>
+                                <td>@item.DepartmentName</td>
+                                <td>
+                                    @if(item.AssignedFacultyName == "Assigned")
+                                    {
+                                        <span class="badge bg-success">Assigned</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Unassigned</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Enrollments" asp-route-id="@item.Id" class="btn btn-sm btn-outline-success me-1">
+                                        <i class="bi bi-people-fill"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

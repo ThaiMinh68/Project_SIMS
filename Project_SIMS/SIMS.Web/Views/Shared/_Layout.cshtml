@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SIMS</title>
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Glassmorphism Navbar -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg glass-panel py-3">
+            <div class="container-fluid px-4">
+                <!-- Sidebar Toggle Button -->
+                <button class="btn btn-link text-dark me-3 d-none d-md-block" id="sidebarToggle" style="text-decoration: none;">
+                    <i class="fas fa-bars fs-4"></i>
+                </button>
+                
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="bg-white rounded-circle p-2 shadow-sm me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fas fa-layer-group fs-5" style="color: var(--primary)"></i>
+                    </div>
+                    SIMS
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor" aria-controls="navbarColor" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars text-dark fs-4"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor">
+                    <!-- Top Navbar items can go here if needed, but user profile is moved to sidebar -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid flex-grow-1">
+        <div class="row h-100">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 p-0 sidebar d-none d-md-flex shadow-sm" id="sidebar">
+                <div class="py-4 px-3 flex-grow-1">
+                    <a href="/" class="sidebar-link active">
+                        <i class="bi bi-grid-1x2-fill"></i> <span class="sidebar-link-text">Dashboard</span>
+                    </a>
+                    
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <div class="sb-sidenav-menu-heading">Admin Management</div>
+                        <a href="/Admin/Dashboard" class="sidebar-link">
+                            <i class="bi bi-speedometer2"></i> <span class="sidebar-link-text">Dashboard</span>
+                        </a>
+
+                        <div class="sb-sidenav-menu-heading">Manage System</div>
+                        <a href="/Admin/StudentIndex" class="sidebar-link">
+                            <i class="bi bi-people-fill"></i> <span class="sidebar-link-text">Students</span>
+                        </a>
+                        <a href="/Admin/FacultyIndex" class="sidebar-link">
+                            <i class="bi bi-person-badge-fill"></i> <span class="sidebar-link-text">Faculty</span>
+                        </a>
+                        <a href="/Admin/DepartmentIndex" class="sidebar-link">
+                            <i class="bi bi-building"></i> <span class="sidebar-link-text">Departments</span>
+                        </a>
+                        <a href="/Admin/CourseIndex" class="sidebar-link">
+                            <i class="bi bi-book-fill"></i> <span class="sidebar-link-text">Courses</span>
+                        </a>
+                        <a href="/Admin/AccountIndex" class="sidebar-link">
+                            <i class="bi bi-shield-lock-fill"></i> <span class="sidebar-link-text">Accounts</span>
+                        </a>
+                    }
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <div class="sb-sidenav-menu-heading">Administration</div>
+                        <a href="/Students" class="sidebar-link">
+                            <i class="bi bi-people-fill"></i> <span class="sidebar-link-text">Students</span>
+                        </a>
+                        <a href="/Courses" class="sidebar-link">
+                            <i class="bi bi-journal-bookmark-fill"></i> <span class="sidebar-link-text">Courses</span>
+                        </a>
+                    }
+                    
+                    @if (User.IsInRole("Student"))
+                    {
+                        <div class="sb-sidenav-menu-heading">Student Portal</div>
+                        <a href="/StudentPortal/Profile" class="sidebar-link">
+                            <i class="bi bi-person-badge-fill"></i> <span class="sidebar-link-text">My Profile</span>
+                        </a>
+                        <a href="/StudentPortal/Registration" class="sidebar-link">
+                            <i class="bi bi-plus-square-fill"></i> <span class="sidebar-link-text">Registration</span>
+                        </a>
+                        <a href="/StudentPortal/MyGrades" class="sidebar-link">
+                            <i class="bi bi-bar-chart-fill"></i> <span class="sidebar-link-text">Transcript</span>
+                        </a>
+                    }
+                    
+                    @if (User.IsInRole("Faculty") || User.IsInRole("Administrator"))
+                    {
+                        <div class="sb-sidenav-menu-heading">Faculty</div>
+                        <a href="/Faculty" class="sidebar-link">
+                            <i class="bi bi-easel-fill"></i> <span class="sidebar-link-text">Grade Entry</span>
+                        </a>
+                    }
+                </div>
+                
+                <!-- User Profile at Bottom of Sidebar -->
+                <div class="mt-auto border-top pt-3 px-3 pb-3">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col main-content bg-app transition-base">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Layout Logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Active Link Script
+            var currentUrl = window.location.pathname;
+            var links = document.querySelectorAll('.sidebar-link');
+            
+            links.forEach(function(link) {
+                link.classList.remove('active');
+                var href = link.getAttribute('href');
+                if(href === currentUrl || (href !== '/' && currentUrl.startsWith(href))) {
+                    link.classList.add('active');
+                }
+                if(currentUrl === '/' && href === '/') {
+                    link.classList.add('active');
+                }
+            });
+
+            // Sidebar Toggle Logic
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', event => {
+                    event.preventDefault();
+                    sidebar.classList.toggle('collapsed');
+                    // Save state to localStorage for persistence
+                    localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+                });
+
+                // Restore state
+                if (localStorage.getItem('sidebar-collapsed') === 'true') {
+                    sidebar.classList.add('collapsed');
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // Global client-side validation messages in English
+        (function () {
+            // Provide English messages for HTML5 constraint validation
+            document.addEventListener('invalid', function (e) {
+                var el = e.target;
+                // Only process form controls
+                if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
+
+                // Clear prior message
+                el.setCustomValidity('');
+
+                if (el.validity.valueMissing) {
+                    el.setCustomValidity('This field is required.');
+                } else if (el.validity.typeMismatch) {
+                    el.setCustomValidity('Please enter a valid value.');
+                } else if (el.validity.rangeUnderflow) {
+                    var min = el.getAttribute('min') || 'the minimum allowed value';
+                    el.setCustomValidity('Value must be greater than or equal to ' + min + '.');
+                } else if (el.validity.rangeOverflow) {
+                    var max = el.getAttribute('max') || 'the maximum allowed value';
+                    el.setCustomValidity('Value must be less than or equal to ' + max + '.');
+                } else if (el.validity.stepMismatch) {
+                    el.setCustomValidity('Please enter a valid value.');
+                } else if (el.validity.patternMismatch) {
+                    el.setCustomValidity('Please match the requested format.');
+                } else {
+                    el.setCustomValidity('Please correct this field.');
+                }
+
+                // Clear custom message on input so native validation can re-evaluate
+                var clear = function () { el.setCustomValidity(''); el.removeEventListener('input', clear); };
+                el.addEventListener('input', clear);
+            }, true);
+        })();
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

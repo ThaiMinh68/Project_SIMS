@@ -1,0 +1,63 @@
+@model IEnumerable<SIMS.Application.DTOs.AttendanceDto>
+
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-primary"><i class="bi bi-calendar-check"></i> Điểm danh</h1>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-white pt-4 pb-0">
+            <h5 class="mb-0">Attendance Records</h5>
+        </div>
+        <div class="card-body">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">No attendance records found.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Course</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var a in Model)
+                            {
+                                <tr>
+                                    <td>@a.AttendanceDate.ToString("dd/MM/yyyy")</td>
+                                    <td><strong>@a.StudentName</strong><br /><small class="text-muted">@a.StudentId_Code</small></td>
+                                    <td>
+                                        @switch (a.Status)
+                                        {
+                                            case "Present":
+                                                <span class="badge bg-success">Có mặt</span>
+                                                break;
+                                            case "Absent":
+                                                <span class="badge bg-danger">Vắng</span>
+                                                break;
+                                            case "Late":
+                                                <span class="badge bg-warning">Muộn</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">@a.Status</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>@a.Notes</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

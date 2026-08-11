@@ -1,0 +1,62 @@
+@model CreateNotificationDto
+
+@{
+	ViewData["Title"] = "Create Notification";
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-danger"><i class="bi bi-plus-circle"></i> @ViewData["Title"]</h1>
+		<a href="@Url.Action("Notifications", "Faculty")" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back
+		</a>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-white pt-4 pb-0">
+					<h5 class="mb-0">Notification Details</h5>
+				</div>
+				<div class="card-body">
+					<form asp-action="CreateNotification" method="post">
+						<div class="mb-3">
+							<label for="courseId" class="form-label">Select Class <span class="text-danger">*</span></label>
+							<select class="form-select" id="courseId" name="courseId" required asp-for="CourseId">
+								<option value="">-- Select a class --</option>
+								@if (ViewBag.Courses != null)
+								{
+									@foreach (var course in ViewBag.Courses)
+									{
+										<option value="@course.Id">@course.Code - @course.Title</option>
+									}
+								}
+							</select>
+						</div>
+
+						<div class="mb-3">
+							<label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+							<input type="text" class="form-control" id="title" name="title" 
+								   placeholder="Notification title" required asp-for="Title">
+						</div>
+
+						<div class="mb-3">
+							<label for="content" class="form-label">Content <span class="text-danger">*</span></label>
+							<textarea class="form-control" id="content" name="content" rows="6"
+									  placeholder="Notification content" required asp-for="Content"></textarea>
+						</div>
+
+						<div class="d-flex gap-2 pt-3">
+							<button type="submit" class="btn btn-danger">
+								<i class="bi bi-check-circle"></i> Send Notification
+							</button>
+							<a href="@Url.Action("Notifications", "Faculty")" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

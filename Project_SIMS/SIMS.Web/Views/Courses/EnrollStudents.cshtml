@@ -1,0 +1,75 @@
+@model IEnumerable<SIMS.Application.DTOs.StudentSelectionDto>
+@{
+    var course = ViewBag.Course as SIMS.Domain.Entities.Course;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Enroll Students to Course: @course?.Title</h4>
+
+<form asp-action="EnrollStudents" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="courseId" value="@course?.Id" />
+
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <input id="selectAll" type="checkbox" class="form-check-input me-2" />
+            <label for="selectAll" class="form-check-label">Select all</label>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Save selection</button>
+            <a asp-action="Index" class="btn btn-secondary ms-2">Back to Course list</a>
+        </div>
+    </div>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th style="width:60px"></th>
+                <th>StudentId</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selectedStudents" value="@s.Id" class="student-checkbox form-check-input" @(s.IsEnrolled ? "checked" : "") />
+                        @if (s.IsEnrolled)
+                        {
+                            <span class="ms-1 small text-success">(already enrolled)</span>
+                        }
+                    </td>
+                    <td>@s.StudentId</td>
+                    <td>@(s.FirstName + " " + s.LastName)</td>
+                    <td>@s.Email</td>
+                    <td>@s.DepartmentName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<script>
+    (function(){
+        const selectAll = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.student-checkbox');
+        if(!selectAll) return;
+
+        // Initialize selectAll checked state when all are checked
+        function refreshSelectAll(){
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(c => c.checked).length;
+            selectAll.checked = total > 0 && checked === total;
+        }
+
+        selectAll.addEventListener('change', function(){
+            checkboxes.forEach(c => c.checked = selectAll.checked);
+        });
+
+        checkboxes.forEach(c => c.addEventListener('change', refreshSelectAll));
+        refreshSelectAll();
+    })();
+</script>

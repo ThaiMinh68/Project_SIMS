@@ -1,0 +1,75 @@
+@model SIMS.Application.DTOs.UpdateCourseDto
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-warning"><i class="bi bi-pencil-square"></i> @ViewData["Title"]</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="CourseIndex" asp-controller="Admin">Course Management</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-white pt-4 pb-0">
+            <h5 class="mb-0">Update Course Information</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="CourseEdit" asp-controller="Admin" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label asp-for="Title" class="form-label fw-bold">Course Name</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Credits" class="form-label fw-bold">Credits</label>
+                        <input asp-for="Credits" type="number" class="form-control" />
+                        <span asp-validation-for="Credits" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Course Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="DepartmentId" class="form-label fw-bold">Department</label>
+                        <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.Departments"></select>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="AssignedFacultyId" class="form-label fw-bold">Assign Faculty</label>
+                        <select asp-for="AssignedFacultyId" class="form-select" asp-items="ViewBag.Faculties">
+                            <option value="">-- Unassigned --</option>
+                        </select>
+                        <span asp-validation-for="AssignedFacultyId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="PrerequisiteCourseId" class="form-label fw-bold">Prerequisite Course</label>
+                        <select asp-for="PrerequisiteCourseId" class="form-select" asp-items="ViewBag.Prerequisites">
+                            <option value="">-- None --</option>
+                        </select>
+                        <span asp-validation-for="PrerequisiteCourseId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-warning px-4"><i class="bi bi-save"></i> Update</button>
+                    <a asp-action="CourseIndex" asp-controller="Admin" class="btn btn-outline-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

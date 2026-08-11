@@ -1,0 +1,60 @@
+@using SIMS.Domain.Entities
+@model IEnumerable<Course>
+
+@{
+    ViewData["Title"] = "My Classes";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <h1 class="text-info"><i class="bi bi-book-half"></i> @ViewData["Title"]</h1>
+        <a href="@Url.Action("Profile", "Faculty")" class="btn btn-outline-secondary">
+            <i class="bi bi-person-circle"></i> My Profile
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No classes assigned to you yet.
+        </div>
+        return;
+    }
+
+    <div class="row">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-0 border-top border-info" style="border-top-width: 4px !important;">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">@course.Title</h5>
+                        <p class="card-text text-muted">
+                            <strong>Code:</strong> <span class="badge bg-info">@course.Code</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Credits:</strong> @course.Credits
+                        </p>
+                        <p class="card-text text-truncate small">
+                            @course.Description
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <div class="d-grid gap-2">
+                            <a href="@Url.Action("ClassDetail", new { courseId = course.Id })" class="btn btn-sm btn-outline-info" title="View Students">
+                                <i class="bi bi-people"></i> View Students
+                            </a>
+                            <!-- Attendance and grade management buttons removed as requested -->
+                            <a href="@Url.Action("Assignments", new { courseId = course.Id })" class="btn btn-sm btn-outline-primary" title="Assignments">
+                                <i class="bi bi-file-earmark-text"></i> Assignments
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+            }
+        </div>
+    </div>
+</div>

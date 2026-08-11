@@ -1,0 +1,86 @@
+@model IEnumerable<dynamic>
+
+@{
+	ViewData["Title"] = "Take Attendance - " + ViewBag.CourseName;
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-info"><i class="bi bi-clipboard-check"></i> Take Attendance</h1>
+		<a href="@Url.Action("Attendance", new { courseId = ViewBag.CourseId })" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back to Attendance History
+		</a>
+	</div>
+
+	<div class="alert alert-info" role="alert">
+		<strong>@ViewBag.CourseName</strong> - @ViewBag.AttendanceDate
+	</div>
+
+	<form method="post" asp-action="SaveAttendance">
+		<input type="hidden" name="courseId" value="@ViewBag.CourseId">
+		<input type="hidden" name="date" value="@ViewBag.AttendanceDate">
+
+		<div class="card shadow-sm border-0">
+			<div class="card-header bg-white pt-4 pb-0">
+				<h5 class="mb-0">Mark Attendance</h5>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-hover align-middle">
+						<thead class="table-light">
+							<tr>
+								<th>Student ID</th>
+								<th>Name</th>
+								<th>Status</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var student in Model)
+							{
+								<tr>
+									<td><span class="badge bg-info">@student.StudentCode</span></td>
+									<td class="fw-bold">@student.StudentName</td>
+									<td>
+										@{
+											var statusOptions = new (string Value, string Text)[]
+											{
+												("Present", "Có mặt"),
+												("Absent", "Vắng"),
+												("Late", "Muộn")
+											};
+										}
+										<select class="form-select form-select-sm" name="attendance[@student.StudentId.ToString()]">
+											@foreach (var status in statusOptions)
+											{
+												if (status.Value == (student.CurrentStatus ?? "Present"))
+												{
+													<option value="@status.Value" selected>@status.Text</option>
+												}
+												else
+												{
+													<option value="@status.Value">@status.Text</option>
+												}
+											}
+										</select>
+									</td>
+									<td>
+										<input type="text" name="notes[@student.StudentId.ToString()]" class="form-control form-control-sm" placeholder="Ghi chú" value="@student.Notes">
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="card-footer bg-white border-top">
+				<button type="submit" class="btn btn-success">
+					<i class="bi bi-check-circle"></i> Save Attendance
+				</button>
+				<a href="@Url.Action("Attendance", new { courseId = ViewBag.CourseId })" class="btn btn-outline-secondary">
+					<i class="bi bi-x-circle"></i> Cancel
+				</a>
+			</div>
+		</div>
+	</form>
+</div>

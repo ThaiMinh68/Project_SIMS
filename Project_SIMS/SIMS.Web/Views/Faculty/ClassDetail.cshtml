@@ -1,0 +1,74 @@
+@model IEnumerable<dynamic>
+
+@{
+	ViewData["Title"] = "Class Details - " + ViewBag.CourseName;
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-info"><i class="bi bi-people-fill"></i> @ViewBag.CourseName</h1>
+		<a href="@Url.Action("Index", "Faculty")" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back to Classes
+		</a>
+	</div>
+
+	<div class="alert alert-info" role="alert">
+		<strong>Course Code:</strong> @ViewBag.CourseCode | 
+		<strong>Total Students:</strong> @Model.Count()
+	</div>
+
+	<div class="card shadow-sm border-0">
+		<div class="card-header bg-white pt-4 pb-0">
+			<h5 class="mb-0">Enrolled Students</h5>
+		</div>
+		<div class="card-body">
+			@if (Model != null && Model.Any())
+			{
+				<div class="table-responsive">
+					<table class="table table-hover align-middle">
+						<thead class="table-light">
+							<tr>
+							<th>Student ID</th>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Enrollment Date</th>
+							<th>Grade</th>
+							<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var student in Model)
+							{
+								<tr>
+									<td><span class="badge bg-info">@student.StudentCode</span></td>
+									<td class="fw-bold">@student.Name</td>
+									<td><a href="mailto:@student.Email">@student.Email</a></td>
+									<td>@student.EnrollmentDate.ToString("dd/MM/yyyy")</td>
+									<td>
+									@if (student.Grade != null)
+									{
+										<span class="badge bg-success">@student.Grade</span>
+									}
+									else
+									{
+										<span class="text-muted">-</span>
+									}
+									</td>
+								<td>
+									<a asp-action="EditGrade" asp-route-enrollmentId="@student.EnrollmentId" class="btn btn-sm btn-outline-primary me-1">Enter/Edit Grade</a>
+								</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+			else
+			{
+				<div class="alert alert-info" role="alert">
+					<i class="bi bi-info-circle"></i> No students enrolled in this class yet.
+				</div>
+			}
+		</div>
+	</div>
+</div>

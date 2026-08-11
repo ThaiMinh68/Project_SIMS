@@ -1,0 +1,88 @@
+@model dynamic
+
+@{
+	ViewData["Title"] = "My Profile";
+}
+
+<div class="container-fluid px-4">
+	<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+		<h1 class="text-primary"><i class="bi bi-person-circle"></i> @ViewData["Title"]</h1>
+		<a href="@Url.Action("Index", "Faculty")" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Back to Classes
+		</a>
+	</div>
+
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	}
+
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="card shadow-sm border-0 mb-4">
+				<div class="card-header bg-white pt-4 pb-0">
+					<h5 class="mb-0">Personal Information</h5>
+				</div>
+				<div class="card-body">
+					<div class="row mb-3">
+						<div class="col-md-6">
+							<label class="form-label">First Name</label>
+							<p class="form-control-plaintext">@Model.FirstName</p>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Last Name</label>
+							<p class="form-control-plaintext">@Model.LastName</p>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-md-12">
+							<label class="form-label">Email</label>
+							<p class="form-control-plaintext">@Model.Email</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<label class="form-label">Phone Number</label>
+							<p class="form-control-plaintext">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Not set" : Model.PhoneNumber)</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6 mb-4">
+					<div class="card shadow-sm border-0">
+						<div class="card-header bg-white pt-4 pb-0">
+							<h5 class="mb-0">Security</h5>
+						</div>
+						<div class="card-body">
+							<p class="card-text">Manage your account security</p>
+							<a href="@Url.Action("ChangePassword", "Faculty")" class="btn btn-primary w-100">
+								<i class="bi bi-lock"></i> Change Password
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 mb-4">
+					<div class="card shadow-sm border-0">
+						<div class="card-header bg-white pt-4 pb-0">
+							<h5 class="mb-0">Contact Information</h5>
+						</div>
+						<div class="card-body">
+							<p class="card-text">Update your contact details</p>
+							<a href="@Url.Action("UpdateContactInfo", "Faculty")" class="btn btn-info w-100">
+								<i class="bi bi-pencil"></i> Update
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
